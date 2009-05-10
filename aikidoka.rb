@@ -28,7 +28,14 @@ module Aikidoka
   
   def self.copy_constants(pairs)
     pairs.each do |old_name, new_name|
-      eval("#{new_name}= #{old_name}")
+      parent_constant = Object
+      namespace_pieces = new_name.split("::")
+      new_constant_name = namespace_pieces.pop
+      
+      namespace_pieces.each do |piece|
+        parent_constant = parent_constant.const_get(piece)
+      end
+      parent_constant.const_set(new_constant_name, Object.class_eval(old_name))
     end
   end
   
