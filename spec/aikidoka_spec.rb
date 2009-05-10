@@ -14,10 +14,7 @@ describe Aikidoka do
   end
   
   it "should remove constants" do
-    module Weapons; end
-    Object.const_defined?(:Weapons).should be_true
-    Aikidoka.remove_constants(:Weapons)
-    Object.const_defined?(:Weapons).should be_false
+
   end
   
   it "should rename a top-level constant" do
