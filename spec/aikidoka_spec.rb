@@ -38,6 +38,31 @@ describe Aikidoka do
     
     remove_constant_hierarchy("Aikido::Weapons")
   end
+  
+  it "should not overwrite existing constant" do
+    module Weapons
+      def block
+      end
+    end
+    
+    
+    Aikidoka.rename("Weapons" => "Aikido::Weapons") do 
+      module Weapons
+        def strike
+        end
+      end
+    end
+    
+    Object.const_defined?(:Weapons).should be_true
+    Object.const_defined?(:Aikido).should be_true
+    Aikido.const_defined?(:Weapons).should be_true
+    Aikido::Weapons.method_defined?(:strike).should be_true
+    Aikido::Weapons.method_defined?(:block).should be_false
+    Weapons.method_defined?(:block).should be_true
+    Weapons.method_defined?(:strike).should be_false
+    
+    remove_constant_hierarchy("Aikido::Weapons", "Weapons") 
+  end
 end
 
 # each name is i.e. Aikido::Weapons::Bokken

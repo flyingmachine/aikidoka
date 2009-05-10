@@ -2,16 +2,16 @@ module Aikidoka
   # Keys should be old names of classes/modules to rename,
   # Values should be new names
   def self.rename(pairs = {})
-    protect_existing_constants(*pairs.keys)
+    hide_existing_constants(*pairs.keys)
     yield
     create_modules(*pairs.values)
     copy_constants(pairs)
     remove_constants(*pairs.keys)
-    return_protected_constants(*pairs.keys) 
+    unhide_constants(*pairs.keys) 
   end
   
-  def self.create_modules(*module_names)
-    module_names.uniq.each do |name|
+  def self.create_modules(*constant_names)
+    constant_names.uniq.each do |name|
       pieces = name.split("::")
       pieces.pop
       parent_constant = Object
@@ -46,5 +46,21 @@ module Aikidoka
     end
   end
   
-  def self.protect_existing_constants()
+  def self.hide_existing_constants(*constant_names)
+    constant_names.each do |name|
+      if(Object.const_defined? name)
+        Object.const_set("Aikidoka#{name}", Object.const_get(name))
+        Object.send(:remove_const, name)
+      end
+    end
+  end
+  
+  def self.unhide_constants(*constant_names)
+    constant_names.each do |name|
+      hidden_name = "Aikidoka#{name}"
+      if(Object.const_defined? hidden_name)
+        Object.const_set(name, Object.const_get(hidden_name))
+        Object.send(:remove_const, hidden_name)
+      end
+    end  end
 end
