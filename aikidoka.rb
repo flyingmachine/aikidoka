@@ -62,5 +62,6 @@ module Aikidoka
         Object.const_set(name, Object.const_get(hidden_name))
         Object.send(:remove_const, hidden_name)
       end
-    end  end
+    end
+  end
 end
