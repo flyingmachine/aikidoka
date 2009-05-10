@@ -2,11 +2,12 @@ module Aikidoka
   # Keys should be old names of classes/modules to rename,
   # Values should be new names
   def self.rename(pairs = {})
-    create_modules(*pairs.values)
-    #protect_existing_constants
+    protect_existing_constants(*pairs.keys)
     yield
+    create_modules(*pairs.values)
     copy_constants(pairs)
     remove_constants(*pairs.keys)
+    return_protected_constants(*pairs.keys) 
   end
   
   def self.create_modules(*module_names)
@@ -39,9 +40,11 @@ module Aikidoka
     end
   end
   
-  def self.remove_constants(*modules_names)
-    modules_names.each do |name|
+  def self.remove_constants(*constant_names)
+    constant_names.each do |name|
       Object.send(:remove_const, name)
     end
   end
+  
+  def self.protect_existing_constants()
 end
