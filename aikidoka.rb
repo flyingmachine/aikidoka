@@ -21,7 +21,8 @@ module Aikidoka
   def self.create_modules(*module_names)
     module_names.uniq.each do |name|
       pieces = name.split("::")
-      module_definition = pieces.inject(""){|definition, piece| "module #{piece}; #{definition} end"}
+      module_definition = pieces.reverse.inject(""){|definition, piece| "module #{piece}; #{definition} end"}
+      puts module_definition
       Object.class_eval(module_definition)
     end
   end
