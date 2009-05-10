@@ -13,9 +13,16 @@ module Aikidoka
     module_names.uniq.each do |name|
       pieces = name.split("::")
       pieces.pop
-      module_definition = pieces.reverse.inject(""){|definition, piece| "module #{piece}; #{definition} end"}
-      puts module_definition
-      Object.class_eval(module_definition)
+      parent_constant = Object
+      pieces.each do |piece|
+        if parent_constant.const_defined?(piece)
+          parent_constant = parent_constant.const_get(piece)
+        else
+          new_module = Module.new
+          parent_constant.const_set(piece, new_module)
+          parent_constant = new_module
+        end
+      end
     end
   end
   
