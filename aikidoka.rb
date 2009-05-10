@@ -1,15 +1,3 @@
-class Mash
-end
-
-module Namespace
-end
-
-Namespace.const_set("Mash", Mash)
-
-puts Namespace::Mash
-Object.send(:remove_const, :Mash)
-puts Namespace::Mash
-
 module Aikidoka
   # Keys should be old names of classes/modules to rename,
   # Values should be new names
