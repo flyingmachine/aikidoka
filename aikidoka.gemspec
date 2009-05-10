@@ -10,9 +10,11 @@ Gem::Specification.new do |s|
   s.description = %q{Avoid namespace collisions}
   s.email = %q{daniel@flyingmachinestudios.com}
   s.files = [
-    "Rakefile",
+    ".gitignore",
+     "Rakefile",
      "VERSION",
-     "aikidoka.rb",
+     "aikidoka.gemspec",
+     "lib/aikidoka.rb",
      "spec/aikidoka_spec.rb"
   ]
   s.has_rdoc = true
